@@ -1,7 +1,6 @@
-#include "Primitivas_LRU.h"
+#include "Parte_1.h"
 
-
-int crear_lrucache(t_lru_cache *cache, unsigned cap_max, tCmp cmp)
+int crear_lrucache_P1(t_lru_cache *cache, unsigned cap_max, tCmp cmp)
 {
     if(cap_max == 0 || cmp == NULL)
         return ERROR;
@@ -14,7 +13,7 @@ int crear_lrucache(t_lru_cache *cache, unsigned cap_max, tCmp cmp)
     return TODO_OK;
 }
 
-void vaciar_lrucache(t_lru_cache *cache)
+void vaciar_lrucache_P1(t_lru_cache *cache)
 {
     while(cache->lista)
     {
@@ -27,7 +26,7 @@ void vaciar_lrucache(t_lru_cache *cache)
     cache->cap_act = 0;
 }
 
-int borrar_lrucache(t_lru_cache *cache, const void *clave)
+int borrar_lrucache_P1(t_lru_cache *cache, const void *clave)
 {
     if(!cache->lista)
     {
@@ -53,7 +52,7 @@ int borrar_lrucache(t_lru_cache *cache, const void *clave)
 
     return TODO_OK;
 }
-int agregar_lrucache(t_lru_cache *cache, const void *dato, unsigned cantBytes)
+int agregar_lrucache_P1(t_lru_cache *cache, const void *dato, unsigned cantBytes)
 {
     tLista* p = &cache->lista;
 
@@ -111,7 +110,7 @@ int agregar_lrucache(t_lru_cache *cache, const void *dato, unsigned cantBytes)
     return TODO_OK;
 }
 
-int obtener_lrucache(t_lru_cache *cache, void *dato, unsigned tamBytes)
+int obtener_lrucache_P1(t_lru_cache *cache, void *dato, unsigned tamBytes)
 {
     tLista *p = &cache->lista;
 
