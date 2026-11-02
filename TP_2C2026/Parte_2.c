@@ -24,6 +24,11 @@ int obtener_lrucache_P2(t_lru_cache_P2 *cache, void *dato, unsigned cantBytes);
 int borrar_lrucache_P2(t_lru_cache_P2 *cache, const void *clave);
 void vaciar_lrucache_P2(t_lru_cache_P2 *cache);
 
+unsigned altura_lrucache_P2(t_lru_cache_P2 *cache)
+{
+    return altura_arbol_P2(&cache->raiz);
+}
+
 void crear_arbol_P2(tArbol *raiz){
     *raiz = NULL;
 }
@@ -91,3 +96,4 @@ unsigned altura_arbol_P2(tArbol *raiz){
     unsigned alt_der = altura_arbol_P2(&(*raiz)->der);
     return (alt_izq > alt_der ? alt_izq : alt_der) + 1;
 }
+

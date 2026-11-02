@@ -40,12 +40,12 @@ typedef struct {
 } t_lru_cache_P2;
 
 
-typedef tNodo_P2 *tLista;
+typedef tNodo_P2 *tLista_P2;
 int crear_lrucache_P2(t_lru_cache_P2 *cache, unsigned cap_max, tCmp cmp);
 int agregar_lrucache_P2(t_lru_cache_P2 *cache, const void *dato, unsigned cantBytes);
 int obtener_lrucache_P2(t_lru_cache_P2 *cache, void *dato, unsigned cantBytes);
 int borrar_lrucache_P2(t_lru_cache_P2 *cache, const void *clave);
 void vaciar_lrucache_P2(t_lru_cache_P2 *cache);
-
-
+unsigned altura_arbol_P2(tArbol *raiz);
+unsigned altura_lrucache_P2(t_lru_cache_P2 *cache);
 #endif // PARTE_2_H_INCLUDED

@@ -1,55 +1,55 @@
-#include "Parte_1.h"
+#include "Parte_3.h"
 
-int main()
+void ejecutar_bateria_lote(const char *nombre_lote, const char *ruta_usu, int es_ordenado)
 {
-    t_lru_cache cache;
+    unsigned capacidades[] = {50, 150, 500, 1500, 3000};
+    int cant_caps = sizeof(capacidades) / sizeof(capacidades[0]);
+    t_resultado_sim res;
 
-    // Creamos una caché pequeña de capacidad máxima 3 para probar rápido el desborde
-    crear_lrucache_P1(&cache, 3, comparar_items);
-    printf("Cache creada con capacidad maxima = 3.\n\n");
+    imprimir_encabezado_tabla(nombre_lote);
 
-    t_item i1 = {1, "Posteo Uno"};
-    t_item i2 = {2, "Posteo Dos"};
-    t_item i3 = {3, "Posteo Tres"};
-    t_item i4 = {4, "Posteo Cuatro"}; // Este va a provocar desborde
+    // 1. Ejecución base Sin Caché
+    simular_sin_cache(ARCH_POSTEOS, ruta_usu, &res);
+    imprimir_fila_resultado("Sin Cache", 0, &res, 0);
+    printf("------------------------------------------------------------------------------------------------------------\n");
 
-    // 1. Probamos agregando elementos
-    printf(">>> Agregando items 1, 2 y 3...\n");
-    agregar_lrucache_P1(&cache, &i1, sizeof(t_item));
-    agregar_lrucache_P1(&cache, &i2, sizeof(t_item));
-    agregar_lrucache_P1(&cache, &i3, sizeof(t_item));
-    mostrar_cache(&cache); // Esperado: [3] -> [2] -> [1] (el último agregado queda al frente)
-
-    // 2. Probamos obtener un elemento existente (Hit) y ver cómo pasa al frente (LRU)
-    printf(">>> Obteniendo el item con ID 1 (Debe pasar al frente)...\n");
-    t_item busqueda = {1, ""}; // Solo necesitamos el ID para comparar
-    if (obtener_lrucache_P1(&cache, &busqueda, sizeof(t_item)) == ENCONTRADO)
+    // 2. Ejecución comparando Parte 1 y Parte 2 para cada capacidad de caché
+    for (int i = 0; i < cant_caps; i++)
     {
-        printf("¡Encontrado! Descripcion recuperada: %s\n\n", busqueda.descripcion);
+        unsigned cap = capacidades[i];
+
+        simular_con_cache_P1(ARCH_POSTEOS, ruta_usu, cap, &res);
+        imprimir_fila_resultado("Cache P1", cap, &res, 0);
+
+        simular_con_cache_P2(ARCH_POSTEOS, ruta_usu, cap, &res);
+        imprimir_fila_resultado("Cache P2", cap, &res, es_ordenado ? 1 : 1); // Mostramos altura siempre o en ordenado
+        printf("------------------------------------------------------------------------------------------------------------\n");
     }
-    mostrar_cache(&cache); // Esperado: [1] -> [3] -> [2]
+    printf("\n");
+}
 
-    // 3. Probamos el desborde al agregar un 4to elemento (Debe descartar al menos recientemente usado: ID 2)
-    printf(">>> Agregando item 4 (Debe desbordar y eliminar al ID 2)...\n");
-    agregar_lrucache_P1(&cache, &i4, sizeof(t_item));
-    mostrar_cache(&cache); // Esperado: [4] -> [1] -> [3]
+int main(int argc, char *argv[])
+{
+    unsigned int semilla = 12345; // Semilla por defecto reproducible
 
-    // 4. Probamos reemplazar un elemento existente (Misma clave, se actualiza y pasa al frente)
-    printf(">>> Actualizando el item con ID 3 ('Posteo Tres Modificado')...\n");
-    t_item i3_mod = {3, "Posteo Tres Modificado"};
-    agregar_lrucache_P1(&cache, &i3_mod, sizeof(t_item));
-    mostrar_cache(&cache); // Esperado: [3] -> [4] -> [1]
+    if (argc > 1)
+        semilla = (unsigned int)atoi(argv[1]);
+    else
+    {
+        printf("Ingrese una semilla numerica para generar los lotes (ej. 12345): ");
+        if (scanf("%u", &semilla) != 1)
+            semilla = 12345;
+    }
 
-    // 5. Probamos borrar un elemento específico por clave
-    printf(">>> Borrando el item con ID 4...\n");
-    t_item a_borrar = {4, ""};
-    borrar_lrucache_P1(&cache, &a_borrar);
-    mostrar_cache(&cache); // Esperado: [3] -> [1]
+    if (generar_todos_los_lotes(semilla) != TODO_OK)
+    {
+        printf("Error al generar los archivos de prueba.\n");
+        return 1;
+    }
 
-    // 6. Vaciamos y liberamos toda la memoria
-    vaciar_lrucache_P1(&cache);
-    printf(">>> Cache vaciada.\n");
-    mostrar_cache(&cache);
+    ejecutar_bateria_lote("LOTE CONCENTRADO (Muchos usuarios ven los mismos posteos)", ARCH_USU_CONCENTRADO, 0);
+    ejecutar_bateria_lote("LOTE DISPERSO (Usuarios ven posteos mayormente diferentes)", ARCH_USU_DISPERSO, 0);
+    ejecutar_bateria_lote("LOTE ORDENADO (IDs en orden creciente - Analisis Altura ABB)", ARCH_USU_ORDENADO, 1);
 
     return 0;
 }
