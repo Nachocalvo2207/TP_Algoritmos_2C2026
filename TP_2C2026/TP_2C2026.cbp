@@ -39,6 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Parte_2.h" />
+		<Unit filename="Parte_3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Parte_3.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

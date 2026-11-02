@@ -12,7 +12,7 @@
 #define SIN_MEM -2
 #define MINIMO(X, Y) (((X) <= (Y)) ? (X) : (Y))
 
-typedef int (*tCmp)(const void *a, const void *b); ///Chequear si esto esta bien... costumbre de PAN
+typedef int (*tCmp)(const void *a, const void *b);
 
 typedef struct sNodo_P2 {
     void *info;
@@ -48,4 +48,5 @@ int borrar_lrucache_P2(t_lru_cache_P2 *cache, const void *clave);
 void vaciar_lrucache_P2(t_lru_cache_P2 *cache);
 unsigned altura_arbol_P2(tArbol *raiz);
 unsigned altura_lrucache_P2(t_lru_cache_P2 *cache);
-#endif // PARTE_2_H_INCLUDED
+
+#endif // PARTE_2_PRUEBAS_H_INCLUDED

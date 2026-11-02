@@ -6,7 +6,7 @@
 #include <string.h>
 #include <time.h>
 #include "Parte_1.h"
-#include "Parte_2_pruebas.h"
+#include "Parte_2.h"
 
 #define CANT_POSTEOS 50000
 #define CANT_USUARIOS 1000   // >= 200 registros como pide el enunciado
