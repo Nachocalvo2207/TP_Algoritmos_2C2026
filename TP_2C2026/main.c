@@ -1,55 +1,66 @@
-#include "Parte_3.h"
+#include "auxiliares.h"
 
-void ejecutar_bateria_lote(const char *nombre_lote, const char *ruta_usu, int es_ordenado)
+int main(void)
 {
-    unsigned capacidades[] = {50, 150, 500, 1500, 3000};
-    int cant_caps = sizeof(capacidades) / sizeof(capacidades[0]);
-    t_resultado_sim res;
+    t_lru_cache c;
+    int         k, i, fallos = 0;
+    char        txt[20];
 
-    imprimir_encabezado_tabla(nombre_lote);
+    printf("=== Demo claves int / valores string, capacidad 3 ===\n");
+    crear_lrucache(&c, 3, cmpInt);
+    k = 1; agregar_lrucache(&c, &k, sizeof k, "uno",  4);
+    k = 2; agregar_lrucache(&c, &k, sizeof k, "dos",  4);
+    k = 3; agregar_lrucache(&c, &k, sizeof k, "tres", 5);
+    mostrarCache(&c, mostrarIntStr);
 
-    // 1. Ejecución base Sin Caché
-    simular_sin_cache(ARCH_POSTEOS, ruta_usu, &res);
-    imprimir_fila_resultado("Sin Cache", 0, &res, 0);
-    printf("------------------------------------------------------------------------------------------------------------\n");
+    k = 1;
+    if(obtener_lrucache(&c, &k, txt, sizeof txt) == LRU_OK)
+        printf("obtener(1) = %s\n", txt);
+    mostrarCache(&c, mostrarIntStr);
 
-    // 2. Ejecución comparando Parte 1 y Parte 2 para cada capacidad de caché
-    for (int i = 0; i < cant_caps; i++)
-    {
-        unsigned cap = capacidades[i];
+    k = 4; agregar_lrucache(&c, &k, sizeof k, "cuatro", 7);
+    printf("agregar(4) -> desborda, sale el 2\n");
+    mostrarCache(&c, mostrarIntStr);
 
-        simular_con_cache_P1(ARCH_POSTEOS, ruta_usu, cap, &res);
-        imprimir_fila_resultado("Cache P1", cap, &res, 0);
+    k = 2;
+    printf("obtener(2) -> %s\n",
+           obtener_lrucache(&c, &k, txt, sizeof txt) == LRU_OK ? "existe" : "no existe");
 
-        simular_con_cache_P2(ARCH_POSTEOS, ruta_usu, cap, &res);
-        imprimir_fila_resultado("Cache P2", cap, &res, es_ordenado ? 1 : 1); // Mostramos altura siempre o en ordenado
-        printf("------------------------------------------------------------------------------------------------------------\n");
-    }
-    printf("\n");
-}
+    k = 3; agregar_lrucache(&c, &k, sizeof k, "TRES (reemplazado)", 19);
+    printf("agregar(3) con clave existente -> reemplaza y pasa primero\n");
+    mostrarCache(&c, mostrarIntStr);
 
-int main(int argc, char *argv[])
-{
-    unsigned int semilla = 12345; // Semilla por defecto reproducible
+    k = 1; borrar_lrucache(&c, &k);
+    printf("borrar(1)\n");
+    mostrarCache(&c, mostrarIntStr);
+    printf("consistente: %s\n", consistente(&c) ? "si" : "NO");
+    vaciar_lrucache(&c);
 
-    if (argc > 1)
-        semilla = (unsigned int)atoi(argv[1]);
-    else
-    {
-        printf("Ingrese una semilla numerica para generar los lotes (ej. 12345): ");
-        if (scanf("%u", &semilla) != 1)
-            semilla = 12345;
-    }
+    printf("\n=== Demo claves string / valores int, capacidad 2 ===\n");
+    crear_lrucache(&c, 2, cmpStr);
+    k = 10; agregar_lrucache(&c, "ana",  4, &k, sizeof k);
+    k = 20; agregar_lrucache(&c, "beto", 5, &k, sizeof k);
+    obtener_lrucache(&c, "ana", &k, sizeof k);
+    k = 30; agregar_lrucache(&c, "caro", 5, &k, sizeof k);
+    mostrarCache(&c, mostrarStrInt);
+    vaciar_lrucache(&c);
 
-    if (generar_todos_los_lotes(semilla) != TODO_OK)
-    {
-        printf("Error al generar los archivos de prueba.\n");
-        return 1;
-    }
+    printf("\n=== Claves en orden creciente (como el lote ordenado) ===\n");
+    crear_lrucache(&c, 100, cmpInt);
+    for(i = 0; i < 1000; i++)
+        agregar_lrucache(&c, &i, sizeof i, &i, sizeof i);
+    printf("  cantidad=%u  altura del indice=%u (arbol degenerado en lista)\n",
+           cantidad_lrucache(&c), altura_indice_lrucache(&c));
+    printf("  consistente: %s\n", consistente(&c) ? "si" : "NO");
+    vaciar_lrucache(&c);
 
-    ejecutar_bateria_lote("LOTE CONCENTRADO (Muchos usuarios ven los mismos posteos)", ARCH_USU_CONCENTRADO, 0);
-    ejecutar_bateria_lote("LOTE DISPERSO (Usuarios ven posteos mayormente diferentes)", ARCH_USU_DISPERSO, 0);
-    ejecutar_bateria_lote("LOTE ORDENADO (IDs en orden creciente - Analisis Altura ABB)", ARCH_USU_ORDENADO, 1);
+    printf("\n=== Pruebas aleatorias contra un modelo de referencia ===\n");
+    fallos += pruebaAleatoria(1,   5,    20000, 1);
+    fallos += pruebaAleatoria(3,   10,   50000, 2);
+    fallos += pruebaAleatoria(10,  30,   50000, 3);
+    fallos += pruebaAleatoria(50,  200,  50000, 4);
+    fallos += pruebaAleatoria(200, 300,  20000, 5);
 
-    return 0;
+    printf("\n%s\n", fallos ? "HUBO FALLAS" : "Todas las pruebas OK");
+    return fallos != 0;
 }
