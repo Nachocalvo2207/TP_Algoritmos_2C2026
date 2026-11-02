@@ -152,7 +152,7 @@ void mostrar_cache(const t_lru_cache *cache)
     printf("--- ESTADO CACHE (Cap: %u/%u) [FRENTE -> FONDO] ---\n", cache->cap_act, cache->cap_max);
     if (!act)
     {
-        printf("Caché vacía.\n");
+        printf("Cache vacia.\n");
     }
     while (act)
     {

@@ -31,10 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Primitivas_LRU.c">
+		<Unit filename="Parte_1.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Primitivas_LRU.h" />
+		<Unit filename="Parte_1.h" />
+		<Unit filename="Parte_2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Parte_2.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

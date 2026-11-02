@@ -1,20 +1,20 @@
 # depslib dependency file v1.0
-1793388445 source:c:\users\smc\desktop\nacho\unlam\algoritmos\tp_2c2026\tp_algoritmos_2c2026\tp_2c2026\main.c
+1793629753 source:c:\users\iaras\desktop\tp_algoritmos_2c2026\tp_2c2026\main.c
 	"Parte_1.h"
 
-1792985890 c:\users\smc\desktop\nacho\unlam\algoritmos\tp_2c2026\tp_algoritmos_2c2026\tp_2c2026\primitivas_lru.h
+1793569608 c:\users\iaras\desktop\tp_algoritmos_2c2026\tp_2c2026\parte_1.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 
-1792987973 source:c:\users\smc\desktop\nacho\unlam\algoritmos\tp_2c2026\tp_algoritmos_2c2026\tp_2c2026\primitivas_lru.c
-	"Primitivas_LRU.h"
+1793629789 source:c:\users\iaras\desktop\tp_algoritmos_2c2026\tp_2c2026\parte_1.c
+	"Parte_1.h"
 
-1793388874 c:\users\smc\desktop\nacho\unlam\algoritmos\tp_2c2026\tp_algoritmos_2c2026\tp_2c2026\parte_1.h
+1793629725 source:c:\users\iaras\desktop\tp_algoritmos_2c2026\tp_2c2026\parte_2.c
+	"Parte_2.h"
+
+1793624398 c:\users\iaras\desktop\tp_algoritmos_2c2026\tp_2c2026\parte_2.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-
-1793388385 source:c:\users\smc\desktop\nacho\unlam\algoritmos\tp_2c2026\tp_algoritmos_2c2026\tp_2c2026\parte_1.c
-	"Parte_1.h"
 

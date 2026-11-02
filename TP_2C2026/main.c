@@ -6,7 +6,7 @@ int main()
 
     // Creamos una caché pequeña de capacidad máxima 3 para probar rápido el desborde
     crear_lrucache_P1(&cache, 3, comparar_items);
-    printf("Caché creada con capacidad maxima = 3.\n\n");
+    printf("Cache creada con capacidad maxima = 3.\n\n");
 
     t_item i1 = {1, "Posteo Uno"};
     t_item i2 = {2, "Posteo Dos"};
@@ -25,7 +25,7 @@ int main()
     t_item busqueda = {1, ""}; // Solo necesitamos el ID para comparar
     if (obtener_lrucache_P1(&cache, &busqueda, sizeof(t_item)) == ENCONTRADO)
     {
-        printf("¡Encontrado! Descripción recuperada: %s\n\n", busqueda.descripcion);
+        printf("¡Encontrado! Descripcion recuperada: %s\n\n", busqueda.descripcion);
     }
     mostrar_cache(&cache); // Esperado: [1] -> [3] -> [2]
 
@@ -48,7 +48,7 @@ int main()
 
     // 6. Vaciamos y liberamos toda la memoria
     vaciar_lrucache_P1(&cache);
-    printf(">>> Caché vaciada.\n");
+    printf(">>> Cache vaciada.\n");
     mostrar_cache(&cache);
 
     return 0;

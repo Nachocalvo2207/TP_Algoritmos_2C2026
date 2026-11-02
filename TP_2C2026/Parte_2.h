@@ -28,10 +28,12 @@ typedef struct sNodo_arbol_P2 {
     struct sNodo_arbol_P2 *der;
 } tNodo_arbol_P2;
 
+typedef tNodo_arbol_P2 *tArbol;
+
 typedef struct {
     tNodo_P2 *primero;   /// Usado mas recientemente
     tNodo_P2 *ultimo;    /// Menos usado recientemente
-    tNodo_arbol_P2 *raiz;        /// Indice por clave
+    tArbol raiz;        /// Indice por clave
     unsigned cap_max;
     unsigned cap_act;
     tCmp cmp;
